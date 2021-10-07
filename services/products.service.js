@@ -38,6 +38,7 @@ class PoductsService {
   }
 
   async findOne(id) {
+    const name = this.getTotal();
     // Devolvemos un solo dato, para saber mas ir a manipulación de arrays
     return this.products.find((item) => item.id == id);
   }
