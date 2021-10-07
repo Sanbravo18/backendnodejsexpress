@@ -1,12 +1,25 @@
 const express = require('express');
+const cors = require('cors')
 const routerApi = require('./routes')
 
 const { logErrors , errorHandler, boomErrorHandler} = require('./middlewares/error.handler')
 
 const app = express();
-const port = 3000;
+const port =  process.env.PORT || 3000;
 
 app.use(express.json()); // middleware para visualizar data con post
+
+const whitelist = ['http://localhost:5500', 'http://localhost:3000'];
+const options = {
+  origin: (origin, callback) => {
+    if(whitelist.includes(origin) || !origin ){
+      callback(null, true)
+    } else {
+      callback(new Error('no permitido'))
+    }
+  }
+}
+app.use(cors(options));
 
 app.get('/',(req,res) => {
     res.send('Hola mi server en express')
